@@ -1,0 +1,10 @@
+{
+	"version": 3,
+	"file": "../sass/main.css",
+	"sources": [
+		"../sass/main.scss",
+		"../sass/components/_header.scss"
+	],
+	"names": [],
+	"mappings": "ACAA,AAAA,WAAW,CAAA;EACP,OAAO,EAAE,IAAI;EACb,gBAAgB,EAAE,OAAe;CAYpC;;AAdD,AAGI,WAHO,CAGP,EAAE,CAAA;EACE,KAAK,EAAE,UACX;CAAC;;AALL,AAMI,WANO,CAMP,KAAK,CAAA;EACD,YAAY,EAAE,MAAM;EACpB,OAAO,EAAE,YAAY;CACxB;;AATL,AAUI,WAVO,CAUP,YAAY,CAAA;EACR,YAAY,EAAE,QAAQ;EACtB,OAAO,EAAE,YAAY;CACxB"
+}

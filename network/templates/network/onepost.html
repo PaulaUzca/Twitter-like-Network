@@ -1,0 +1,47 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block headscript%}
+<link rel="stylesheet" href="{% static 'network/css/onepost.css' %}">
+{%endblock%}
+
+{% block body %}
+
+<div class='onepost' data-id="{{post.id}}">
+    <ul class="post__head">
+        <li class="author"><a href="{% url 'profile' username=post.author.username%}">{{post.author.username}}</a></li>
+    </ul>
+    <p class="content">{{post.content}}</p>
+
+    <ul class='post__info'>
+        <li class="date">Posted on: {{post.date}}</li>
+    </ul>
+
+    <div class="post__buttons">
+        <div class='like__section'>
+             <span class="like__button" data-id='{{post.id}}'>
+                {%if userlike%}
+                ❤️
+                {%else %}
+                🤍
+                {%endif%}
+            </span>
+            <p class="like__amount">{{likes}} likes</p>
+        </div>
+           
+            
+        {% if post.author.username == user.username%}
+            <button class='basic__button' >Edit</button>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block script%}
+    <script type='module' src ="{% static 'network/js/onepost.js' %}"></script>
+    <script type = "module" src="{% static 'network/js/likepost.js' %}"></script>
+
+
+{% endblock %}

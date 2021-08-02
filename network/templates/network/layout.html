@@ -1,0 +1,43 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>{% block title %}Social Network{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'network/css/style.css' %}" rel="stylesheet">
+        {% block headscript %}
+        {% endblock%}
+      </head>
+    <body>
+
+      <nav class="navigation">
+        <div class='app__name'><a href="#">Network</a></div>
+        <ul class="menu">
+          <li><a href="{% url 'index'%}">All Posts</a></li>
+          {% if user.is_authenticated%}
+          <li><a href="{% url 'following'%}">Following</a></li>
+          {% endif %}
+        </ul>
+
+        <ul class="user-action">
+          {% if user.is_authenticated%}
+          <li><a href="{% url 'profile' username=user.username%}">{{user.username}}</a></li>
+          <li><a href="{% url 'logout'%}">Log out</a></li>
+          {% else %}
+          <li><a href="{% url 'login'%}">Log in</a></li>
+          <li><a href="{% url 'register'%}">Sign up</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+
+
+        <div class="body">
+            {% block body %}
+            {% endblock %}
+        </div>
+
+        {% block script%}
+        {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,29 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<!-- All post scroll view. User sees all post and can post -->
+    <section class='allposts--view'>
+
+        {% include 'network/post-form.html'%}
+
+        <h2>What's happening today</h2>
+
+        {% include 'network/postsdisplay.html'%}
+
+    </section>
+
+    <!-- Post detail. User sees post more closely -->
+    <section class='seepost--view hide-post-view'>
+
+        <h1>Says:</h1>
+
+    </section>
+{% endblock %}
+
+
+{% block script%}
+    {% include 'network/posts-scripts.html'%}
+{% endblock %}
+

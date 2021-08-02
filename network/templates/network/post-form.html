@@ -1,0 +1,7 @@
+<div id='newpost-form' class="form_container">
+    <form id="newpost" class="form__post">
+        {%csrf_token%}
+        <textarea class="post-content-form" id='postcontent' autofocus type="textarea" name="content" placeholder="what's on your mind?"></textarea>
+        <input class="basic__button" type="submit"></input>
+    </form>
+</div>

@@ -1,0 +1,21 @@
+.onepost{
+    width: 100%;
+    min-width: 320px;
+    max-width: 450px;
+}
+
+.post__info{
+    padding: 0px;
+    li{
+        display: inline-block;
+        list-style: none;
+    }
+}
+.post__buttons{
+    display: flex;
+    justify-content: space-between;
+    .like__section{
+        display: inline-flex;
+        align-items: center;
+    }
+}

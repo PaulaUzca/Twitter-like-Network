@@ -1,0 +1,21 @@
+{% for post in page.object_list%}
+    <div class="post" data-id="{{post.id}}">
+        <ul class="post__head">
+            <li class="author"><a href="{% url 'profile' username=post.author.username%}">{{post.author.username}}</a></li>
+            <li class="date">{{post.date}}</li>
+        </ul>
+        <p class="content">{{post.content}}</p>
+        <div class="post__actions">
+
+            <span class="like__button" data-id='{{post.id}}'>
+                {%if post.id in userlikes%}
+                ❤️
+                {%else %}
+                🤍
+                {%endif%}
+            </span>
+            <p class="like__amount">{{post.like_count}}</p>  
+        </div>
+    </div>
+{% endfor %}
+

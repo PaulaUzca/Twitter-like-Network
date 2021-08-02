@@ -2,7 +2,11 @@
     <div class="post" data-id="{{post.id}}">
         <ul class="post__head">
             <li class="author"><a href="{% url 'profile' username=post.author.username%}">{{post.author.username}}</a></li>
-            <li class="date">{{post.date}}</li>
+            <li class="date">
+                {% if post.edited%}
+                (edited)
+                {%endif%}
+                {{post.date}}</li>
         </ul>
         <p class="content">{{post.content}}</p>
         <div class="post__actions">

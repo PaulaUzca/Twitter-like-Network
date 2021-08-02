@@ -19,7 +19,7 @@ class Post(models.Model):
     content = models.TextField(max_length=127)
     date = models.DateTimeField(auto_now=True)
     edited = models.BooleanField(default=False, blank=True)
-    editdate = models.DateField(null=True, blank=True)
+    editdate = models.DateField(auto_now=True, null=True, blank=True)
 
     objects = PostManager()
 

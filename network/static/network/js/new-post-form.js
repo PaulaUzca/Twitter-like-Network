@@ -1,6 +1,8 @@
 import { csrftoken } from "./csrftoken.js"
 import { getPosts } from "./display-posts.js"
 
+import {isAllBlank} from "./checkpost.js"
+
 document.querySelector('#newpost').onsubmit =  (evt) => {
     evt.preventDefault()
     sendNewPost(document.querySelector('#postcontent').value)
@@ -8,8 +10,8 @@ document.querySelector('#newpost').onsubmit =  (evt) => {
 
 
 function sendNewPost(content){
-    if(content == ""){
-        alert("you are supposed to write something!")
+    if(isAllBlank(content)){
+        alert('You are supposed to write something!!!')
     }
     else{
 

@@ -125,12 +125,37 @@ def getposts(request, posts):
 
 def getOnePost(request, id):
     post =  Post.objects.get(id=id)
-    data = {
-        'post': post,
-        'likes': getPostLikes(post),
-        'userlike': doesUserLike(request.user, post)
-    }
-    return render(request,'network/onepost.html', data)
+
+    if request.method == 'GET':
+        data = {
+            'post': post,
+            'likes': getPostLikes(post),
+            'userlike': doesUserLike(request.user, post)
+        }
+        return render(request,'network/onepost.html', data)
+
+    elif request.method == 'PUT' and request.user == post.author:
+        data = json.loads(request.body)
+        new_content = data.get('newcontent')
+        print(new_content)
+        post.content = new_content
+        post.edited = True
+        print(post)
+        try:
+            post.save()
+        except:
+            return Http404
+        else:
+            return HttpResponse(200)
+        
+    elif request.method == 'DELETE' and request.user == post.author:
+        try:
+            post.delete()
+        except:
+            return Http404()
+        else:
+            return HttpResponse(200)
+
 
 
 def likeManager(request):

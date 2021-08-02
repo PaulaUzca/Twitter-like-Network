@@ -19,3 +19,36 @@
         align-items: center;
     }
 }
+
+
+// EDIT POST SECTION
+.editpost{
+    width: 100%;
+    min-width: 320px;
+    max-width: 450px;
+
+    .horizontal-list{
+        display: flex;
+        justify-content: flex-end;
+        input{
+            margin-left: 10px;
+        }
+    }
+}
+.editpost__form{
+    margin-top: 10px;
+}
+
+.editpost__form--textarea{
+    width: 100%;
+    height: 60px;
+    resize: none;
+}
+
+.showsection{
+    display: block;
+}
+
+.hidesection{
+    display: none;
+}

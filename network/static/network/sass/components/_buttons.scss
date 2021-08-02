@@ -1,6 +1,8 @@
 .basic__button{
     background-color: white;
     padding: 1px 10px;
+    width: auto;
+
 
     &:hover{
         background-color: $blue;
@@ -8,4 +10,18 @@
     &:active{
         transform: scale(0.97);
     }
+}
+
+
+.btn-red{
+    &:hover{
+        background-color: red;
+    }
+}
+
+
+    
+.close-editor{
+    cursor: pointer;
+    color: black
 }

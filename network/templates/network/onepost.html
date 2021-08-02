@@ -7,14 +7,18 @@
 
 {% block body %}
 
-<div class='onepost' data-id="{{post.id}}">
+<section class='onepost' data-id="{{post.id}}">
     <ul class="post__head">
         <li class="author"><a href="{% url 'profile' username=post.author.username%}">{{post.author.username}}</a></li>
     </ul>
     <p class="content">{{post.content}}</p>
 
     <ul class='post__info'>
-        <li class="date">Posted on: {{post.date}}</li>
+        <li class="date">Posted on: {{post.date}}
+            {% if post.edited%}
+            (edited)
+            {% endif %}
+        </li>
     </ul>
 
     <div class="post__buttons">
@@ -31,17 +35,57 @@
            
             
         {% if post.author.username == user.username%}
-            <button class='basic__button' >Edit</button>
+            <button id='edit-button' class='basic__button'>Edit</button>
         {% endif %}
     </div>
-</div>
+</section>
+
+
+{% if post.author.username == user.username%}
+<section class="editpost hidesection">
+    <ul class="post__head">
+        <li class="author"><a href="{% url 'profile' username=post.author.username%}">{{post.author.username}}</a></li>
+        <span id='close-editor' class='close-editor'>&#10006</span>
+    </ul>
+
+    <textarea id='newcontent' class="editpost__form--textarea">{{post.content}}</textarea>
+
+    <ul class='post__info'>
+        <li class="date">Posted on: {{post.date}}</li>
+    </ul>
+
+    <div class="post__buttons">
+        <div class='like__section'>
+             <span class="like__button" data-id='{{post.id}}'>
+                {%if userlike%}
+                ❤️
+                {%else %}
+                🤍
+                {%endif%}
+            </span>
+            <p class="like__amount">{{likes}} likes</p>
+        </div>
+
+        <div class='submit__section'>
+        {% if post.author.username == user.username%}
+            <button id='delete-post'class="basic__button btn-red" >delete post</button>
+            <button id='edit-done' class='basic__button'>post edit</button>
+        
+        {% endif %}
+        </div>
+
+    </div>
+</section>
+
+{% endif %}
+
 
 {% endblock %}
 
 
 {% block script%}
     <script type='module' src ="{% static 'network/js/onepost.js' %}"></script>
-    <script type = "module" src="{% static 'network/js/likepost.js' %}"></script>
-
+   <!--  <script type = "module" src="{% static 'network/js/likepost.js' %}"></script>
+ -->
 
 {% endblock %}

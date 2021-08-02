@@ -34,10 +34,10 @@
     li{
         list-style: none;
     }
-    .author{
-        font-weight: bold;
-    }
+}
 
+.author{
+    font-weight: bold;
 }
 
 .date{
@@ -48,6 +48,7 @@
 .content{
     width: fit-content;
     padding: 5px 0px;
+    min-height: 60px;
 }
 
 .post__actions{

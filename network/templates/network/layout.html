@@ -12,7 +12,7 @@
     <body>
 
       <nav class="navigation">
-        <div class='app__name'><a href="#">Network</a></div>
+        <div class='app__name'><a href="{% url 'index' %}">Network</a></div>
         <ul class="menu">
           <li><a href="{% url 'index'%}">All Posts</a></li>
           {% if user.is_authenticated%}

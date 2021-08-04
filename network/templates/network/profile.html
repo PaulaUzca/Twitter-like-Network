@@ -12,10 +12,10 @@
             <li>{{followers_count}} followers</li>
             <li>{{following_count}} following</li>
         </ul>
+        <p>Posted: {{posts_count}}</p>
         
         <!-- Follow button-->
         {% if user.username != username%}
-            {%if user.is_authenticated%}
                 <button id='followButton' class='basic__button'>
                 {% if userIsFollower %}
                     Unfollow
@@ -28,9 +28,6 @@
                     <p>follows you</p>
                 {%endif%}
 
-            {% else %}
-            <p>Sign in to follow</p>
-            {% endif %}
         {% endif %}
     </section>
 
@@ -49,4 +46,4 @@
     <script type='module' src="{% static 'network/js/display-posts.js' %}"></script>
     <script type="module" src="{% static 'network/js/follow.js' %}"></script>
 
-    {% endblock %}
+{% endblock %}

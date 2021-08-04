@@ -17,7 +17,7 @@ class PostManager(models.Manager):
 class Post(models.Model):
     author = models.ForeignKey(User,on_delete=CASCADE, related_name='posts')
     content = models.TextField(max_length=127)
-    date = models.DateTimeField(auto_now=True)
+    date = models.DateTimeField(auto_now_add=True)
     edited = models.BooleanField(default=False, blank=True)
     editdate = models.DateField(auto_now=True, null=True, blank=True)
 

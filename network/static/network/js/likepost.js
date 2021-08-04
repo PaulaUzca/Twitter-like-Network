@@ -14,11 +14,16 @@ function sendLike(method, id){
             })
         })
         .then(response => {
-            if(response.ok){
-                return response.json()
-            }
-            else{
-                throw new Error("Not 2xx response")
+            switch(response.status){
+                case 200:
+                    return response.json();
+                break;
+                case 401:
+                    alert("sign in to like post");
+                break;
+                default:
+                    throw new Error("Not 2xx response")
+                break;
             }
         })
         .catch(error => console.log(error))

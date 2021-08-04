@@ -11,31 +11,12 @@ a{
     position: relative;
 }
 
-.form_container{
-    width: 100%;
-    max-width: 430px;
-    margin-bottom: 20px;
-}
-.form__post{
-    width: 100%;
+.signin__banner{
+    height: 150px;
+    display: flex;
+    align-items: center;
 }
 
-.post-content-form{
-    height: 160px;
-    width: 100%;
-    border: 1px solid black;
-    border-radius: 0px;
-    resize: none;
-
-    &:focus{
-        box-shadow: none;
-        border: 2px solid black;
-    }
-}
-input{
-    margin: 8px 0px;
-    width: 100px;
-}
 
 #allposts{
     max-width: 450px;

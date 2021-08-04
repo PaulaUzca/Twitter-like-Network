@@ -3,10 +3,11 @@
         <ul class="post__head">
             <li class="author"><a href="{% url 'profile' username=post.author.username%}">{{post.author.username}}</a></li>
             <li class="date">
+                {{post.date}}
                 {% if post.edited%}
-                (edited)
+                (edited on {{post.editdate}})
                 {%endif%}
-                {{post.date}}</li>
+            </li>
         </ul>
         <p class="content">{{post.content}}</p>
         <div class="post__actions">

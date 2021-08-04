@@ -5,8 +5,13 @@
 
 <!-- All post scroll view. User sees all post and can post -->
     <section class='allposts--view'>
-
+        {% if user.is_authenticated%}
         {% include 'network/post-form.html'%}
+        {% else %}
+        <div class="signin__banner">
+            <p>Sing in to share your thoughts with the world</p>
+        </div>
+        {% endif%}
 
         <h2>What's happening today</h2>
 

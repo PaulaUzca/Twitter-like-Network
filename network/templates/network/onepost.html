@@ -16,7 +16,7 @@
     <ul class='post__info'>
         <li class="date">Posted on: {{post.date}}
             {% if post.edited%}
-            (edited)
+            (edited on {{post.editdate}})
             {% endif %}
         </li>
     </ul>
@@ -69,8 +69,11 @@
         <div class='submit__section'>
         {% if post.author.username == user.username%}
             <button id='delete-post'class="basic__button btn-red" >delete post</button>
+            {% if post.edited %}
+            <p> You can't edit the same post twice </p>
+            {% else %}
             <button id='edit-done' class='basic__button'>post edit</button>
-        
+            {% endif %}
         {% endif %}
         </div>
 

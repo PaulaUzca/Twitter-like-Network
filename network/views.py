@@ -1,5 +1,6 @@
 import json
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import AnonymousUser
 from django.core import exceptions
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.db import IntegrityError
@@ -47,7 +48,7 @@ def doesUserLike(user,post):
     else:
         return True
 
-#check if user is following this account
+#check if user is following other
 def isUserFollowing(user, other):
     try:
         Follow.objects.get(user= user, user_follow=other)
@@ -55,17 +56,6 @@ def isUserFollowing(user, other):
         return False
     else:
         return True
-
-#check if this account is following the user
-def isAccountFollower(user, other):
-    try:
-        Follow.objects.get(user = other, user_follow = user)
-    except ObjectDoesNotExist:
-        return False
-    else:
-        return True
-
-
 
 
 #get all posts
@@ -130,17 +120,15 @@ def getOnePost(request, id):
         data = {
             'post': post,
             'likes': getPostLikes(post),
-            'userlike': doesUserLike(request.user, post)
+            'userlike': doesUserLike(request.user, post) if request.user.is_authenticated else False
         }
         return render(request,'network/onepost.html', data)
 
-    elif request.method == 'PUT' and request.user == post.author:
+    elif request.method == 'PUT' and request.user == post.author and post.edited==False:
         data = json.loads(request.body)
         new_content = data.get('newcontent')
-        print(new_content)
         post.content = new_content
         post.edited = True
-        print(post)
         try:
             post.save()
         except:
@@ -157,29 +145,32 @@ def getOnePost(request, id):
             return HttpResponse(200)
 
 
-
 def likeManager(request):
-    postid = json.loads(request.body).get('postid') #get the liked or disliked post id from the request
-    post = getPost(postid)
+    if not request.user.is_authenticated:
+        return HttpResponse(status=401)
 
-    if request.method == 'PUT': # like - create new like object
-        newLike = Like(post = post, user=request.user) 
-        try:
-            newLike.full_clean() # see if everything is ok when creating object
-        except ValidationError:
-            raise HttpResponseBadRequest
-        else:
-            newLike.save()
+    else:
+        postid = json.loads(request.body).get('postid') #get the liked or disliked post id from the request
+        post = getPost(postid)
 
-    elif request.method == 'DELETE': # dislike - delete like object 
-        try:
-            dislike = Like.objects.get(post= post, user=request.user)
-        except ObjectDoesNotExist:
-            raise HttpResponseBadRequest
-        else:
-            dislike.delete()
+        if request.method == 'PUT': # like - create new like object
+            newLike = Like(post = post, user=request.user) 
+            try:
+                newLike.full_clean() # see if everything is ok when creating object
+            except ValidationError:
+                raise HttpResponseBadRequest
+            else:
+                newLike.save()
 
-    return JsonResponse({'likes': getPostLikes(post) }, status=200)
+        elif request.method == 'DELETE': # dislike - delete like object 
+            try:
+                dislike = Like.objects.get(post= post, user=request.user)
+            except ObjectDoesNotExist:
+                raise HttpResponseBadRequest
+            else:
+                dislike.delete()
+
+        return JsonResponse({'likes': getPostLikes(post) }, status=200)
 
 
 
@@ -191,26 +182,28 @@ def newpost(request):
         try: 
             Post.objects.newPost(request.user,content)
         except ValidationError:
-            HttpResponse(500, content={'message':'post unsuccessful'})
+            HttpResponse(status=500, content={'message':'post unsuccessful'})
         else:
             return HttpResponse(200)
+    else:
+        return HttpResponse(status=401)
+
+
+def followManager(user, other):
+    if isUserFollowing(user, other):
+        Follow.objects.unfollow(user, other)
+        return JsonResponse({'follow':False}, status=200)
+    else:
+        Follow.objects.follow(user, other)
+        return JsonResponse({'follow':True}, status=200)
 
 
 def profile(request, username):
     user_profile = User.objects.get(username = username)
 
-    if request.method == 'PUT':
-        try:
-            Follow.objects.get(user = request.user, user_follow= user_profile)
-        
-        except ObjectDoesNotExist: #follow user
-            Follow.objects.follow(request.user, user_profile)
-            return JsonResponse({'follow':True}, status=200)
+    if request.method == 'PUT': #follow user manager
+        return followManager(request.user, user_profile) if request.user.is_authenticated else HttpResponse(status = 401)
 
-        else: #unfollow user
-            Follow.objects.unfollow(request.user, user_profile)
-            return JsonResponse({'follow':False}, status=200)
-        
     else:
         if request.GET.get('page'):
             posts = Post.objects.filter(author = user_profile)
@@ -222,8 +215,9 @@ def profile(request, username):
                 'username' : user_profile.username,
                 'followers_count' : user_profile.followers.count(),
                 'following_count' : user_profile.following.count(),
-                'userIsFollower' : isUserFollowing(request.user, user_profile),
-                'followsUser' : isAccountFollower(request.user, user_profile)
+                'userIsFollower' : isUserFollowing(request.user, user_profile) if request.user.is_authenticated else False,
+                'followsUser' : isUserFollowing(user_profile, request.user) if request.user.is_authenticated else False,
+                'posts_count' : user_profile.posts.count()
             }
             return render(request, 'network/profile.html', profile)
 

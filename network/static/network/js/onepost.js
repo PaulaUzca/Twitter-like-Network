@@ -8,12 +8,16 @@ document.querySelector('.like__button').onclick = () =>{
 }
 
 //opens the editor view
-document.querySelector('#edit-button').onclick = () =>{
- showSections()
-}
+let editor = document.querySelector('#edit-button')
+if(editor)
+    editor.onclick = () =>{
+    showSections()
+    }
 
 // x button on top of editor view
-document.querySelector('#close-editor').onclick = () =>{
+let closeEditor = document.querySelector('#close-editor')
+if(closeEditor)
+    closeEditor.onclick = () =>{
     showSections()
 }
 
@@ -23,40 +27,53 @@ function showSections(){
 }
 
 //User has edited the post and now clicks done editing
-document.querySelector('#edit-done').onclick = () => editPost()
+let doneEditing = document.querySelector('#edit-done')
+if(doneEditing)
+    doneEditing.onclick = () => editPost()
 
-function editPost(){
-    let newcontent = document.querySelector('#newcontent').value
+function isContentInvalid(newcontent){
     if(newcontent == document.querySelector(".content").textContent)
     {
         alert("You didn't edit anything")
+        return true
     }
     if(isAllBlank(newcontent)){
         alert("You can't post an empty post")
+        return true
     }
-
-    fetch('', {
-        method: 'PUT',
-        headers: {
-            "X-CSRFToken": csrftoken,
-        },
-        body : JSON.stringify({
-            'newcontent' : newcontent
-        })
-    })
-    .then(response => {
-        if(response.status == 200){
-            location.reload()
-        }
-        else{
-            alert("something went wrong :(")
-        }
-        return response.json()
-    })
-    .catch(error => console.log(error))
+    return false
 }
 
-document.querySelector('#delete-post').onclick = () => deletePost()
+function editPost(){
+    let newcontent = document.querySelector('#newcontent').value
+
+    if(!isContentInvalid(newcontent) ){
+        fetch('', {
+            method: 'PUT',
+            headers: {
+                "X-CSRFToken": csrftoken,
+            },
+            body : JSON.stringify({
+                'newcontent' : newcontent
+            })
+        })
+        .then(response => {
+            if(response.status == 200){
+                location.reload()
+            }
+            else{
+                alert("something went wrong :(")
+            }
+            return response.json()
+        })
+        .catch(error => console.log(error))
+
+    }
+}
+
+let deleteButton = document.querySelector('#delete-post') 
+if(deleteButton)
+    deleteButton.onclick = () => deletePost()
 function deletePost(){
     fetch('', {
         method: 'DELETE',
